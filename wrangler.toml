@@ -4,14 +4,16 @@
 # 部署步骤：
 #   1. npm install -g wrangler
 #   2. wrangler login
-#   3. wrangler deploy
+#   3. 先建一个 R2 桶（如果还没建过）：
+#        wrangler r2 bucket create cuven-chat-media
+#   4. wrangler deploy
 #
 # 部署后，把 opop_1.html 顶部的 CHAT_API 常量改成你的 Worker URL
 # （wrangler deploy 完会在终端打印出来，类似 https://cuven-chat.xxx.workers.dev）
 # 如果你想用自己的域名（例如 chat.cuven.us），到 Cloudflare Dashboard
 # Workers & Pages → 该 Worker → Settings → Triggers → Custom Domains 添加。
 
-name = "chat"
+name = "cuven-chat"
 main = "worker.js"
 compatibility_date = "2024-11-01"
 # 开启 nodejs_compat 不是必要的（我们没用 Node API），但保留向后兼容
@@ -27,6 +29,13 @@ class_name = "ChatRoom"
 [[migrations]]
 tag = "v1"
 new_sqlite_classes = ["ChatRoom"]
+
+# ─── R2 媒体桶绑定 ──────────────────────────────────────────
+# 用于缓存与转发聊天图片 / 文件 / 视频等二进制内容。
+# 桶名要先用 `wrangler r2 bucket create cuven-chat-media` 创建。
+[[r2_buckets]]
+binding     = "MEDIA"
+bucket_name = "cuven-chat-media"
 
 # ─── 可选：自定义域名路由 ─────────────────────────────────────
 # 解除注释并改成你自己的域名（域名要先在 Cloudflare DNS 接管）
