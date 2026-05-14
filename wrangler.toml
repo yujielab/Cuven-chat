@@ -13,7 +13,7 @@
 # 如果你想用自己的域名（例如 chat.cuven.us），到 Cloudflare Dashboard
 # Workers & Pages → 该 Worker → Settings → Triggers → Custom Domains 添加。
 
-name = "cuven-chat"
+name = "chat"
 main = "worker.js"
 compatibility_date = "2024-11-01"
 # 开启 nodejs_compat 不是必要的（我们没用 Node API），但保留向后兼容
